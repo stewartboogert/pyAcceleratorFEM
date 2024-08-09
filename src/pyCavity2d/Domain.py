@@ -53,5 +53,6 @@ class Domain2D :
         self.mesh = _ng.Mesh(self.ngmesh)
 
         print(self.mesh.GetBoundaries())
-        
+
+    def draw(self):
         _Draw(self.mesh)
