@@ -66,7 +66,7 @@ class FieldCalculator :
 
     def draw(self, imode = 1, field = "E") :
         if field == "E" :
-            _Draw(self.gfu_E[imode], self.domain.mesh, vectors=True, order=2)
+            _Draw(self.gfu_E[imode], self.domain.mesh, vectors = {"grid_size" : 25, "offset" : 5}, order=2)
         elif field == "B" :
             _Draw(_ng.Norm(self.gfu_H[imode]), self.domain.mesh, order=2)
         else :
