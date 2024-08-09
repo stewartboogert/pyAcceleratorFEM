@@ -15,7 +15,7 @@ class DomainLoader :
 
         boundary = []
         for l in f :
-            boundary.append(map(float,l.split()))
+            boundary.append([float(v) for v in l.split()])
 
         return boundary
 
