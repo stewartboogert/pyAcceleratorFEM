@@ -1,0 +1,18 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "setuptools_scm[toml]>=3.4",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyCavity2d"
+requires-python = ">=3.6"
+dynamic = ["version"]
+dependencies = [
+  "numpy",
+  "ngsolve",
+  "webgui_jupyter_widgets",
+]
+
+[tool.setuptools_scm]
+write_to = "src/pyCavity2d/_version.py"
