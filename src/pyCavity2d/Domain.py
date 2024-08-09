@@ -22,7 +22,7 @@ class DomainLoader :
 
 class Domain2D :
 
-    def __init__(self, boundary = [[-0.15,0], [-0.15,0.03], [-0.1,0.03], [-0.1,0.3], [0.1,0.3], [0.1,0.03], [0.15,0.03], [0.15,0], [-0.15,0]]) :
+    def __init__(self, boundary, maxh=0.001, single_cell = True) :
     #def __init__(self, boundary = [[-0.02,0], [-0.02,0.005], [-0.015,0.005], [-0.015,0.047], [0.015,0.047],[0.015,0.005], [0.02,0.005], [0.02,0], [-0.02,0]]) :
     #def __init__(self, boundary = [[0,0], [-0.015,0.047], [0.015,0.047], [0.015,-0.047], [-0.015,-0.047], [-0.015,0]]) :
     #def __init__(self, boundary = [[-0.015,0], [-0.015,0.047], [0.015,0.047], [0.015,0],[-0.015,0]]): # SF example
@@ -37,17 +37,19 @@ class Domain2D :
         wp.Close().Reverse()
         self.domain = wp.Face()
 
-        #self.domain.edges.Min(_ngocc.X).name = "zmin"
-        #self.domain.edges.Max(_ngocc.X).name = "zmax"
-        #self.domain.edges.Min(_ngocc.X).col = (1, 0, 0) #TODO what is this col?
-        #self.domain.edges.Max(_ngocc.X).col = (1, 0, 0)
+        if single_cell :
+            self.domain.edges.Min(_ngocc.X).name = "zmin"
+            self.domain.edges.Max(_ngocc.X).name = "zmax"
+            self.domain.edges.Min(_ngocc.X).col = (1, 0, 0) #TODO what is this col?
+            self.domain.edges.Max(_ngocc.X).col = (1, 0, 0)
+
         self.domain.edges.Min(_ngocc.Y).name = "rmin"
         self.domain.edges.Min(_ngocc.Y).col = (1, 0, 0)
         
         geo = _ngocc.OCCGeometry(self.domain, dim=2)
 
         # mesh
-        self.ngmesh = geo.GenerateMesh(maxh=0.01)
+        self.ngmesh = geo.GenerateMesh(maxh=maxh)
         self.mesh = _ng.Mesh(self.ngmesh)
 
         print(self.mesh.GetBoundaries())
