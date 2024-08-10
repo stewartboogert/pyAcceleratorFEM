@@ -1,9 +1,35 @@
+import numpy as _np
 import ngsolve as _ng
 import netgen.occ as _ngocc
 from ngsolve.webgui import Draw as _Draw
 
+c_mpers = 299792458
+
 class DomainCreator :
-    pass
+    @classmethod
+    def make2d_rectangular(self, cavity_freqnecy_ghz = 0.8, iris_radius = 0.025, iris_thickness = 0.01):
+        b = []
+
+        cavity_radius = 2.405*c_mpers/(cavity_freqnecy_ghz*1e9)/2/_np.pi
+        cell_length = 1/(cavity_freqnecy_ghz*1e9)/2*c_mpers
+
+        cavity_length = cell_length - 2 *iris_thickness
+
+        b.append([-cavity_length/2-iris_thickness,0])
+        b.append([-cavity_length/2-iris_thickness,iris_radius])
+        b.append([-cavity_length/2,               iris_radius])
+        b.append([-cavity_length/2,               cavity_radius])
+        b.append([ cavity_length/2,               cavity_radius])
+        b.append([ cavity_length/2,               iris_radius])
+        b.append([ cavity_length/2+iris_thickness,iris_radius])
+        b.append([ cavity_length/2+iris_thickness,0])
+
+        print(b)
+        return b
+
+class DomainWriter :
+    def __init__(self):
+        pass
 
 class DomainLoader :
     def __init__(self):
@@ -20,8 +46,12 @@ class DomainLoader :
         return boundary
 
     @classmethod
-    def load2d_boundary_repeat(self, fileName = "", n = 1):
-        b = DomainLoader.load2d_boundary(fileName)
+    def make_boundary_repeat(self, boundary = "", n = 1):
+
+        if type(boundary) is str :
+            b = DomainLoader.load2d_boundary(boundary)
+        else :
+            b = boundary
 
         # strip the (-cavLength,0) and (cavLength,0) points
         b = b[1:-1]
