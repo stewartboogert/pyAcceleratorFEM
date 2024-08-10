@@ -19,6 +19,28 @@ class DomainLoader :
 
         return boundary
 
+    @classmethod
+    def load2d_boundary_repeat(self, fileName = "", n = 1):
+        b = DomainLoader.load2d_boundary(fileName)
+
+        # strip the (-cavLength,0) and (cavLength,0) points
+        b = b[1:-1]
+
+        # find caviy length
+        cavLength = b[-1][0] - b[0][0]
+        print(cavLength)
+
+        # repeat the cavity n times
+        b_repeated = []
+        for i in range(0,n,1) :
+            b_repeated.extend([[bi[0]+cavLength*i,bi[1]] for bi in b])
+
+        # add back the  the (0,0) and (n*cavLength,0) points
+        b_repeated.insert(0,[b_repeated[0][0],0])
+        b_repeated.append([b_repeated[-1][0],0])
+        b_repeated.append([b_repeated[0][0],0])
+
+        return b_repeated
 
 class Domain2D :
 
