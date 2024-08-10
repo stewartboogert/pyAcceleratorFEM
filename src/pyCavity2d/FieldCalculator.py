@@ -13,7 +13,7 @@ class FieldCalculator :
     def __init__(self, domain):
         self.domain = domain
 
-    def compute(self, nmodes = 10, axisymmetric = True):
+    def compute(self, nmodes = 10, maxit = 200, axisymmetric = True):
         # define finite element space
         fes = _ng.HCurl(self.domain.mesh, order=1, dirichlet='default')
         u, v = fes.TnT()
@@ -49,7 +49,7 @@ class FieldCalculator :
             self.M = m.mat
             self.precond = pre.mat
             self.eigenvals, self.eigenvecs = _ng.solvers.PINVIT(a.mat, m.mat, pre=projpre, num=nmodes,
-                                                                maxit=100,
+                                                                maxit=maxit,
                                                                 printrates=False)
 
         # print out eigenvalues
