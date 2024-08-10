@@ -56,3 +56,21 @@ class Domain2D :
 
     def draw(self):
         _Draw(self.mesh)
+
+class Domain3D :
+    def __init__(self, boundary, maxh=0.005, single_cell = True) :
+        coil = _ngocc.Cylinder(_ngocc.Axes((0, 0, 1), _ngocc.Z), r=0.047, h=0.03)
+
+        self.domain = coil
+
+        self.domain.edges.Min(_ngocc.X).name = "zmin"
+        self.domain.edges.Max(_ngocc.X).name = "zmax"
+        self.domain.edges.Min(_ngocc.X).col = (1, 0, 0)  # TODO what is this col?
+        self.domain.edges.Max(_ngocc.X).col = (1, 0, 0)
+
+        geo = _ngocc.OCCGeometry(self.domain, dim=3)
+
+        self.ngmesh = geo.GenerateMesh(maxh=maxh)
+        self.mesh = _ng.Mesh(self.ngmesh)
+    def draw(self):
+        _Draw(self.mesh)
