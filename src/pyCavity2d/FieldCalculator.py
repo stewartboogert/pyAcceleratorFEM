@@ -13,16 +13,22 @@ class FieldCalculator :
     def __init__(self, domain):
         self.domain = domain
 
-    def compute(self, nmodes = 10):
+    def compute(self, nmodes = 10, axisymmetric = True):
         # define finite element space
         fes = _ng.HCurl(self.domain.mesh, order=1, dirichlet='default')
         u, v = fes.TnT()
-        
-        a = _ng.BilinearForm(_ng.y * _ng.curl(u) * _ng.curl(v) * _ng.dx).Assemble()
-        m = _ng.BilinearForm(_ng.y * u * v * _ng.dx).Assemble()
 
-        apre = _ng.BilinearForm(_ng.y * _ng.curl(u) * _ng.curl(v) * _ng.dx + _ng.y * u * v * _ng.dx)
-        pre = _ng.Preconditioner(apre, "direct", inverse="sparsecholesky")
+        if axisymmetric :
+            a = _ng.BilinearForm(_ng.y * _ng.curl(u) * _ng.curl(v) * _ng.dx).Assemble()
+            m = _ng.BilinearForm(_ng.y * u * v * _ng.dx).Assemble()
+            apre = _ng.BilinearForm(_ng.y * _ng.curl(u) * _ng.curl(v) * _ng.dx + _ng.y * u * v * _ng.dx).Assemble()
+            pre = _ng.Preconditioner(apre, "direct", inverse="sparsecholesky")
+        else :
+            a = _ng.BilinearForm(_ng.curl(u) * _ng.curl(v) * _ng.dx).Assemble()
+            m = _ng.BilinearForm(u * v * _ng.dx).Assemble()
+
+            apre = _ng.BilinearForm(_ng.curl(u) * _ng.curl(v) * _ng.dx + u * v * _ng.dx).Assemble()
+            pre = _ng.Preconditioner(apre, "direct", inverse="sparsecholesky")
 
         with _ng.TaskManager():
             a.Assemble()
