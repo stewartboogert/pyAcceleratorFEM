@@ -92,7 +92,15 @@ class FieldCalculator :
                              filename=f"E_{imode}", subdivision=2)
         else :
             vtk = _VTKOutput(self.domain.mesh,
-                             coefs=[self.gfu_B[imode]],
+                             coefs=[self.gfu_H[imode]],
                              names=[f"B_{imode}"],
                              filename=f"B_{imode}", subdivision=2)
         vtk.Do()
+
+    def plotAxialFields(self, imode=1, field = "E") :
+        z = _np.linspace(0,0.8,100)
+        mip = self.domain.mesh(z,0)
+        if field == "E" :
+            return self.gfu_E[imode](mip)
+        elif field == "B" :
+            return self.gfu_H[imode](mip)
