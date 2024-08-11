@@ -23,8 +23,6 @@ class DomainCreator :
         b.append([ cavity_length/2,               iris_radius])
         b.append([ cavity_length/2+iris_thickness,iris_radius])
         b.append([ cavity_length/2+iris_thickness,0])
-
-        print(b)
         return b
 
 class DomainWriter :
