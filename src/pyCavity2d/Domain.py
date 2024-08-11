@@ -56,7 +56,6 @@ class DomainLoader :
 
         # find caviy length
         cavLength = b[-1][0] - b[0][0]
-        print(cavLength)
 
         # repeat the cavity n times
         b_repeated = []
