@@ -1,5 +1,6 @@
 import ngsolve as _ng
 import numpy as _np
+from ngsolve import VTKOutput as _VTKOutput
 from ngsolve.webgui import Draw as _Draw
 
 q0   = 1.60217663e-19
@@ -76,8 +77,22 @@ class FieldCalculator :
                   vectors = {"grid_size" : 25, "offset" : 5},
                   # draw_surf=False,
                   order=2)
+
         elif field == "B" :
             _Draw(_ng.Norm(self.gfu_H[imode]), self.domain.mesh, order=2)
         else :
             print("field = E|B")
-    
+
+
+    def vtk(self, imode = 1, field = "E"):
+        if field == "E" :
+            vtk = _VTKOutput(self.domain.mesh,
+                             coefs=[self.gfu_E[imode]],
+                             names=[f"E_{imode}"],
+                             filename=f"E_{imode}", subdivision=2)
+        else :
+            vtk = _VTKOutput(self.domain.mesh,
+                             coefs=[self.gfu_B[imode]],
+                             names=[f"B_{imode}"],
+                             filename=f"B_{imode}", subdivision=2)
+        vtk.Do()
