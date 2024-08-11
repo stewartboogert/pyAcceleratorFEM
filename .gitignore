@@ -3,3 +3,4 @@
 _version.py
 *.egg-info
 .ipynb_checkpoints
+*.vtu
