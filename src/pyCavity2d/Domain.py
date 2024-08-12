@@ -58,8 +58,17 @@ class DomainCreator :
         _plt.plot(ba[:,0],ba[:,1])
 
 class DomainWriter :
+
     def __init__(self):
         pass
+
+    @classmethod
+    def write(cls, fileName, boundary):
+        f = open(fileName,"w")
+
+        for p in boundary :
+            f.write(f"{p[0]} {p[1]}\n")
+        f.close()
 
 class DomainLoader :
     def __init__(self):
