@@ -100,12 +100,12 @@ class FieldCalculator :
                              filename=f"B_{imode}", subdivision=2)
         vtk.Do()
 
-    def plotAxialFields(self, imode=1, field = "E", npt = 100) :
+    def plotAxialFields(self, imode=1, field = "E", radius = 0.005, npt = 100) :
 
         zmin = self.domain.boundary[0][0]+0.005
         zmax = self.domain.boundary[-2][0]-0.005
         z = _np.linspace(zmin,zmax,npt)
-        mip = self.domain.mesh(z,0)
+        mip = self.domain.mesh(z,radius)
         if field == "E" :
             return [z, self.gfu_E[imode](mip)]
         elif field == "H" :
