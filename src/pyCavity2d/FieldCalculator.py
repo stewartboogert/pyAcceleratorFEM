@@ -78,7 +78,7 @@ class FieldCalculator :
                   settings={"Objects": {"Wireframe": wireframe}},
                   order=2)
 
-        elif field == "B" :
+        elif field == "H" :
             _Draw(_ng.Norm(self.gfu_H[imode]),
                   self.domain.mesh,
                   settings={"Objects": {"Wireframe": wireframe}},
@@ -93,7 +93,7 @@ class FieldCalculator :
                              coefs=[self.gfu_E[imode]],
                              names=[f"E_{imode}"],
                              filename=f"E_{imode}", subdivision=2)
-        else :
+        elif field == "H" :
             vtk = _VTKOutput(self.domain.mesh,
                              coefs=[self.gfu_H[imode]],
                              names=[f"B_{imode}"],
@@ -108,5 +108,5 @@ class FieldCalculator :
         mip = self.domain.mesh(z,0)
         if field == "E" :
             return [z, self.gfu_E[imode](mip)]
-        elif field == "B" :
+        elif field == "H" :
             return [z, self.gfu_H[imode](mip)]
