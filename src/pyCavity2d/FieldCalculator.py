@@ -71,15 +71,18 @@ class FieldCalculator :
             self.gfu_H.append(1j / (mu0 * w) * _ng.curl(gfu)) # H is 1j out of phase with curl of E
 
 
-    def draw(self, imode = 1, field = "E") :
+    def draw(self, imode = 1, field = "E", wireframe=True) :
         if field == "E" :
             _Draw(self.gfu_E[imode], self.domain.mesh,
                   vectors = {"grid_size" : 25, "offset" : 5},
-                  # draw_surf=False,
+                  settings={"Objects": {"Wireframe": wireframe}},
                   order=2)
 
         elif field == "B" :
-            _Draw(_ng.Norm(self.gfu_H[imode]), self.domain.mesh, order=2)
+            _Draw(_ng.Norm(self.gfu_H[imode]),
+                  self.domain.mesh,
+                  settings={"Objects": {"Wireframe": wireframe}},
+                  order=2)
         else :
             print("field = E|B")
 
