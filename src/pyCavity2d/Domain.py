@@ -1,4 +1,5 @@
 import numpy as _np
+import matplotlib.pyplot as _plt
 import ngsolve as _ng
 import netgen.occ as _ngocc
 from ngsolve.webgui import Draw as _Draw
@@ -25,24 +26,6 @@ class DomainCreator :
         b.append([ cavity_length/2+iris_thickness,0])
         return b
 
-class DomainWriter :
-    def __init__(self):
-        pass
-
-class DomainLoader :
-    def __init__(self):
-        pass
-
-    @classmethod
-    def load2d_boundary(self, fileName = ""):
-        f = open(fileName,"r")
-
-        boundary = []
-        for l in f :
-            boundary.append([float(v) for v in l.split()])
-
-        return boundary
-
     @classmethod
     def make_boundary_repeat(self, boundary = "", n = 1):
 
@@ -68,6 +51,29 @@ class DomainLoader :
         b_repeated.append([b_repeated[0][0],0])
 
         return b_repeated
+
+    @classmethod
+    def draw(self, b):
+        ba = _np.array(b)
+        _plt.plot(ba[:,0],ba[:,1])
+
+class DomainWriter :
+    def __init__(self):
+        pass
+
+class DomainLoader :
+    def __init__(self):
+        pass
+
+    @classmethod
+    def load2d_boundary(self, fileName = ""):
+        f = open(fileName,"r")
+
+        boundary = []
+        for l in f :
+            boundary.append([float(v) for v in l.split()])
+
+        return boundary
 
 class Domain2D :
 
