@@ -5,7 +5,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pyCavity2d"
+name = "pyAcceleratorFEM"
 requires-python = ">=3.6"
 dynamic = ["version"]
 dependencies = [
@@ -15,4 +15,4 @@ dependencies = [
 ]
 
 [tool.setuptools_scm]
-write_to = "src/pyCavity2d/_version.py"
+write_to = "src/pyAcceleratorFEM/_version.py"
