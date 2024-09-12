@@ -24,6 +24,8 @@ class DomainCreator :
         b.append([ cavity_length/2,               iris_radius])
         b.append([ cavity_length/2+iris_thickness,iris_radius])
         b.append([ cavity_length/2+iris_thickness,0])
+        b.append([-cavity_length/2-iris_thickness,0])
+
         return b
 
     @classmethod
@@ -35,7 +37,7 @@ class DomainCreator :
             b = boundary
 
         # strip the (-cavLength,0) and (cavLength,0) points
-        b = b[1:-1]
+        b = b[1:-2]
 
         # find caviy length
         cavLength = b[-1][0] - b[0][0]
@@ -51,6 +53,19 @@ class DomainCreator :
         b_repeated.append([b_repeated[0][0],0])
 
         return b_repeated
+
+
+    @classmethod
+    def remove_identical(self, b) :
+        bi_old = [-1e9,-1e9]
+        b_new = []
+        for bi in b :
+            if bi[0] != round(bi_old[0],8) or bi[1] != round(bi_old[1],8) :
+                b_new.append(bi)
+
+            bi_old = bi
+
+        return b_new
 
     @classmethod
     def draw(self, b):
@@ -69,6 +84,36 @@ class DomainWriter :
         for p in boundary :
             f.write(f"{p[0]} {p[1]}\n")
         f.close()
+
+    @classmethod
+    def writeSuperfish(self, fileName, boundary, title = ""):
+        if title == "" :
+            title = "Superfish probelm written by pyCavity"
+        icylin = 1
+        dx = 0.25
+        freq = 500
+        xdri=0
+        ydri=5
+        kmethod=1
+        beta=0.99
+
+        with open(fileName,"w") as f :
+            f.write(f"{title}\n")
+            f.write("\n")
+            f.write("&reg kprob=1,\n")
+            f.write(f"icylin={icylin},\n")
+            f.write(f"freq={freq},\n")
+            f.write(f"xdri={xdri},\n")
+            f.write(f"ydri={ydri},\n")
+            f.write(f"kmethod={kmethod},\n")
+            f.write(f"beta={beta}&\n")
+            f.write("\n")
+
+            for bi in boundary :
+                s = f"$po x={bi[0]*100}, y={bi[1]*100}$"+"\n"
+                f.write(s)
+
+            f.close()
 
 class DomainLoader :
     def __init__(self):
